@@ -7,6 +7,7 @@ const bodyParser = require('body-parser');
 const logger = require('morgan');
 const User = require('./User');
 const Transaction = require('./Transaction')
+const Record = require('./Record');
 
 //const Transaction = require('./data');
 //const Record = require('./data');
@@ -159,6 +160,45 @@ router.get('/getTransaction', (req, res) => {
   });
 });
 
+
+router.post('/putRecord', (req, res) => {
+  let data = new Record();
+  const {owner, date, sharedBy, transactions} = req.body;
+  if(!owner || !date){
+    return res.json({
+        success: false,
+        error: 'INVALID INPUTS'
+    });
+  }
+
+  data.owner = owner;
+  data.date = date;
+  data.sharedBy = sharedBy;
+  data.transactions = transactions;
+
+  data.save((err, record) => {
+    if (err) return res.json({ success: false, error: err });
+    return res.json({ success: true, recordId: record.id });
+  });
+
+
+});
+
+router.post('/getRecord', (req, res) => {
+  const {id }= req.body;
+
+  Record.findById(id, function(err,record){
+       if(err || record == null){
+       console.log(err);
+       return res.json({success: false});
+     }
+     else{
+       console.log(record);
+       //sess.name = name;
+       return res.json({ success: true, record: record });
+     }
+   });
+})
 
 // append /api for our http requests
 app.use('/api', router);
