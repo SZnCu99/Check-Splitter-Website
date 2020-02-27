@@ -4,6 +4,7 @@ const Schema = mongoose.Schema;
 const Transaction = new Schema(
   {
     owner: String,
+    recordId: String,
     payer: String,
     amount: Number,
     sharedby: [String],

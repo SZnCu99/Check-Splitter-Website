@@ -131,7 +131,7 @@ router.get('/newRecord',(req,res) => {
 router.post('/putTransaction', (req, res) => {
   let data = new Transaction();
 
-  const { owner, payer, amount, sharedBy, displayShared, isresult, comment } = req.body;
+  const { owner, recordId, payer, amount, sharedBy, displayShared, isresult, comment } = req.body;
 
   if (!owner || !payer || !sharedBy) {
     return res.json({
@@ -140,11 +140,13 @@ router.post('/putTransaction', (req, res) => {
     });
   }
   data.owner = owner;
+  data.recordId = recordId;
   data.payer = payer;
   data.amount = parseInt(amount,10);
   data.sharedBy = sharedBy;
   data.displayShared = displayShared;
-  console.log(sharedBy);
+  console.log("creating transaction for record: ")
+  console.log(recordId);
   data.isresult = isresult;
   data.comment = comment;
   data.save((err) => {
@@ -153,9 +155,15 @@ router.post('/putTransaction', (req, res) => {
   });
 });
 
-router.get('/getTransaction', (req, res) => {
-  Transaction.find((err, transactions) => {
-    if (err) return res.json({ success: false, error: err });
+router.post('/getTransaction', (req, res) => {
+  const {recordId} = req.body;
+  console.log("getting transactions for record:")
+  console.log(recordId);
+  Transaction.find({recordId: recordId}, function(err, transactions){
+    if (err) {
+      return res.json({ success: false, error: err });
+    }
+    console.log(transactions);
     return res.json({ success: true, transactions: transactions });
   });
 });
