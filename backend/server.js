@@ -17,9 +17,10 @@ const app = express();
 app.use(cors());
 const router = express.Router();
 
-// this is our MongoDB database
+// this is the connection link to my mongoDB database
+// for safety issue, I hid the username and password from the link
 const dbRoute =
-  'mongodb+srv://admin:lxt991206@cluster0-vsyar.mongodb.net/test?retryWrites=true&w=majority';
+  'mongodb+srv://<username:password>@cluster0-vsyar.mongodb.net/test?retryWrites=true&w=majority';
 
 
 // connects our back end code with the database
