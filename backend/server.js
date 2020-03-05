@@ -50,6 +50,8 @@ app.use(session(
 
 var sess;
 
+/* Backend code for user login */
+
 // this is our get method
 // this method fetches all available data in our database
 router.get('/getData', (req, res) => {
@@ -119,16 +121,23 @@ router.post('/authentication',(req,res) => {
 
 });
 
+
+/* redirection to user dashboard after login */
 router.get('/dashboard',(req,res) => {
   if (err) return res.json({ success: false, error: err });
   return res.json({ success: true });
 });
 
+
+/* redirection to record creating page */
 router.get('/newRecord',(req,res) => {
   if (err) return res.json({ success: false, error: err });
   return res.json({ success: true });
 });
 
+/* backend code for transactions */
+
+//create new transactions
 router.post('/putTransaction', (req, res) => {
   let data = new Transaction();
 
@@ -156,6 +165,7 @@ router.post('/putTransaction', (req, res) => {
   });
 });
 
+//get transactions
 router.post('/getTransaction', (req, res) => {
   const {recordId} = req.body;
   console.log("getting transactions for record:")
@@ -169,7 +179,9 @@ router.post('/getTransaction', (req, res) => {
   });
 });
 
+/* backend code for records */
 
+//creating new record
 router.post('/putRecord', (req, res) => {
   let data = new Record();
   const {owner, date, sharedBy, transactions} = req.body;
@@ -193,6 +205,7 @@ router.post('/putRecord', (req, res) => {
 
 });
 
+//getting record by Id from database
 router.post('/getRecord', (req, res) => {
   const {id }= req.body;
 
